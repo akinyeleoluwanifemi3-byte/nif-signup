@@ -1,0 +1,192 @@
+Please generate a full responsive frontend developer portfolio website with the following detailed specifications:
+
+General Setup
+Use HTML5, fully semantic structure, with language attribute lang="en".
+
+Use Tailwind CSS loaded via CDN for styling.
+
+Load Google Fonts for the "Inter" font family with weights from 300 to 900.
+
+Include FontAwesome CDN for icon fonts (version 6.4.2).
+
+The entire webpage background color is very dark (#0a0a0a), with light text (#e2e8f0).
+
+The webpage uses a custom animated cursor with two elements: a small dot (8px) and a larger outlined circle (40px), both tracking mouse movement with smooth easing and scaling effects on hover.
+
+Scrollbar is customized: 8px wide, track background #0a0a0a, thumb is #4f46e5 with rounded corners, changing to #6366f1 on hover.
+
+The entire page content is initially hidden behind a full-screen split-screen loader animation.
+
+Loader Animation
+Full viewport fixed overlay with two black halves side-by-side, each half expands in width scale up to about 166% over about 1 second, simultaneously advancing a visible percentage counter from 0% to 100% in increments of 1% every 10 milliseconds.
+
+After reaching 100%, the left half translates fully left (-100%) and the right half fully right (100%) out of view with a 1-second transition.
+
+Then the loader overlay disappears, revealing the main site content with a fade-in effect.
+
+Homepage Content Structure & Styling
+Header / Navbar
+Fixed top with padding that shrinks on scroll from 1.5rem to 1rem vertical and horizontal.
+
+Background transitions to translucent dark (rgba(17,24,39,0.7)) on scroll.
+
+Contains site logo text "daniel." on the left, styled with bold, white text and an indigo hover highlight.
+
+Navigation links (Home, About, Experience, Projects, Education, Contact) appear horizontally on medium+ screens, with subtle color fade from slate-300 to white on hover.
+
+A "Let's Talk" call-to-action button with indigo gradient background and scale on hover is visible on medium+ screens.
+
+On mobile screens, a hamburger menu toggles a vertical navigation menu with subtle glassmorphism effect and same link styling.
+
+Hero Section
+Minimum full viewport height, vertically and horizontally centered text with generous horizontal padding.
+
+Background includes a subtle animated gradient overlay with about 20% opacity behind content.
+
+Main heading: "Hi, I'm daniel" with large gradient text from cyan-400 to blue-500 (gradient clipped in text).
+
+Subtitle below: "Frontend Developer Ready to Build Your Next Product." in gray text.
+
+Description paragraph describing recent graduate skills in HTML, CSS, JS, React.
+
+A prominent rounded CTA button "Let's Connect" with cyan-to-blue gradient background.
+
+Floating brand icons scattered around the hero area representing technologies: HTML5, CSS3, JavaScript, React, Java, Code icon, Python, Node.js — all positioned absolutely with distinct colors and sizes (5xl).
+
+The hero text and button animate in on page load with fade and vertical motion using GSAP easing.
+
+Skills Marquee Section
+A horizontally scrolling marquee effect with repeated skill keywords: “Three.js”, “React”, “GSAP”, “Tailwind CSS”, “Next.js”, “Framer Motion”, “WebGL”.
+
+The marquee text uses large font size (4xl), bold, with muted slate-500 color.
+
+The marquee loops infinitely with smooth linear left-to-right animation lasting about 25 seconds per cycle.
+
+Two duplicate sets of marquee text are placed side by side for seamless infinite scroll.
+
+About Section
+Two-column grid on medium+ screens:
+
+Left side: A rounded square image container with glassmorphism effect (semi-transparent dark background with blur) housing a programmer image (provided URL).
+
+Right side: Title "Passionate Frontend Developer" in large bold font (5xl).
+
+Two paragraphs describing the passion for creating fast, beautiful web apps, combining design and code, always learning.
+
+On mobile the order is preserved with the image stacked on top.
+
+Portfolio Section (circular style)
+Section with dark background (#0f0f10) and light text.
+
+Header area with:
+
+Subtitle text "Projects" in smaller slate-500 color.
+
+Large title "Practice makes perfect."
+
+Description text about valuing quality work over quantity.
+
+A circular rotating text around a circle border reading repeatedly "Portfolio — Portfolio — Portfolio — …" in pale color (#cbd5e1).
+
+Inside the circle is bold large text "1+" representing years of freelance & development experience, with descriptive text below.
+
+Experience Section (timeline style)
+Centered vertical timeline bar in the middle with slates-700 color line.
+
+Experience entries placed alternately left and right on medium+ screens, with circles marking points on the timeline line.
+
+Each experience block has a glass-effect background with padding and rounded corners.
+
+Three timeline items:
+
+2022-Present: Lead Frontend Developer at Stellar Solutions Inc., tasks include developing 3D product visualizers with Three.js and React, improving engagement by 40%, maintaining component library with Tailwind CSS.
+
+2020-2022: Senior Frontend Developer at Quantum Dynamics, specializing in data visualizations and GSAP animations.
+
+2018-2020: Frontend Developer at Innovatech, building responsive user interfaces with modern JS frameworks and CSS preprocessors.
+
+Projects Section (horizontal scroll)
+Title centered: "Featured Projects"
+
+A horizontally scrollable container pinned on scroll, where projects scroll horizontally triggered by vertical page scroll.
+
+Each project card is a glass-effect rounded rectangle with padding and containing:
+
+Large icon representing project category (cube, chart-line, cart-shopping, gamepad) colored distinctively.
+
+Project title and a brief description.
+
+Four project cards:
+
+3D Configurator with Three.js
+
+Data Viz Platform with D3.js and React
+
+E-commerce Site with Next.js
+
+WebGL Game with browser-based WebGL graphics
+
+Education Section
+Centered block with two educational items, each in a glass-effect container with icon:
+
+B.Sc. in Computer Science at University of Technology (2014-2018)
+
+Ongoing Advanced Three.js & WebGL Certification at Online Graphics Academy
+
+Contact Section
+Centered heading "Let's Build the Future"
+
+Paragraph inviting projects or connections
+
+Contact email styled with a transparent gradient text from indigo to purple and hover effect, mailto link: hello@daniel.com
+
+Footer
+Centered copyright text & tagline
+
+“© 2025 CodeWithdaniel. All rights reserved.”
+
+“Designed & Built with futuristic vibes.”
+
+Styles & Effects
+Use glassmorphism style for multiple containers (dark translucent background with 10px blur and white transparent border).
+
+Use subtle GSAP scroll-triggered fade and slide animations for section titles and content:
+
+Elements reveal from below or sides with easing as they enter viewport.
+
+Use GSAP ScrollTrigger to create:
+
+Navbar padding and background color transition on scroll.
+
+Hero text fade and scale entrance animations.
+
+Horizontal scroll pinning effect for the projects section, moving projects track horizontally as user scrolls vertically.
+
+Animate the circular "Portfolio" text to continuously rotate clockwise at about 0.6 degrees per animation frame.
+
+Custom Cursor
+A small dot and a larger outlined circle that follow mouse position smoothly using GSAP with easing timings.
+
+Cursor outline expands and changes border color when hovering on any link or button.
+
+The cursor elements should not interfere with pointer events.
+
+Background
+Implement a Three.js starfield background behind all content:
+
+5000 randomly positioned particles in a 3D cube space.
+
+Particles colored #4c51bf with partial transparency.
+
+Camera moves slowly in response to mouse movement for parallax effect.
+
+Particles slowly rotate around X and Y axes with time.
+
+Other
+The page must be fully responsive with appropriate stacking on smaller screens and two-column layouts on larger screens.
+
+Include smooth scrolling behavior for intra-page navigation.
+
+All interactive elements have appropriate hover and focus states.
+
+Provide a fully working, modern, clean, and polished web portfolio front-end code using the above instructions, including HTML, CSS (Tailwind utility classes and some custom styles), JavaScript for GSAP animations, Three.js background, and custom cursor behavior exactly as described.
