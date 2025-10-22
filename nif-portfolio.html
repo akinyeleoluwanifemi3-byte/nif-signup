@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AkinyeleOluwanifemiDaniel - Frontend Developer Portfolio</title>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet" />
+<!-- FontAwesome CDN -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+   
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Animated Cursor */
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #cbd5e1;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #cbd5e1;
+        }
+
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+            transition: transform 0.2s ease-out, width 0.3s ease-out, height 0.3s ease-out, border-color 0.3s ease-out;
+        }
+
+        .cursor-hover {
+            transform: scale(1.5);
+            border-color: #818cf8;
+        }
+
+        /* Glassmorphism */
+        .glass-effect {
+            background: rgba(17, 24, 39, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4f46e5;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+
+        /* GSAP reveal initial states */
+        .gsap-reveal {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .gsap-reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+
+        .gsap-reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+        }
+
+        /* Marquee */
+        @keyframes marquee {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee 25s linear infinite;
+        }
+
+        /* Split Screen Loader */
+        .loader-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100000;
+            display: flex;
+            pointer-events: none;
+        }
+
+        .loader-half {
+            width: 50%;
+            height: 100%;
+            background: #000;
+            position: relative;
+            transition: transform 1s ease-in-out;
+        }
+
+        .left-half {
+            transform-origin: right center;
+        }
+
+        .right-half {
+            transform-origin: left center;
+        }
+
+        .progress-counter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12rem;
+            font-weight: 200;
+            z-index: 100001;
+            line-height: 1;
+        }
+
+        @media (max-width: 640px) {
+            .progress-counter {
+                font-size: 5rem;
+            }
+        }
+
+        /* Main content hidden until loader completes */
+        .site-content {
+            opacity: 0;
+            transition: opacity 0.6s ease-in;
+        }
+
+        .site-content.visible {
+            opacity: 1;
+        }
+
+        /* Circular Portfolio (dark theme adjusted) */
+        .portfolio-section {
+            padding: 80px 0;
+            background-color: #0f0f10;
+            color: #e2e8f0;
+        }
+
+        .portfolio-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 64px;
+            gap: 24px;
+        }
+
+        @media (min-width: 1024px) {
+            .portfolio-header {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .portfolio-text {
+            width: 100%;
+        }
+
+        @media (min-width: 1024px) {
+            .portfolio-text {
+                width: 50%;
+            }
+        }
+
+        .portfolio-subtitle {
+            color: #94a3b8;
+            font-size: 18px;
+        }
+
+        .portfolio-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-top: 16px;
+            line-height: 1.2;
+        }
+
+        .portfolio-description {
+            color: #94a3b8;
+            margin-top: 24px;
+            margin-left: 0;
+        }
+
+        .portfolio-circle {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        @media (min-width: 1024px) {
+            .portfolio-circle {
+                width: 41.666667%;
+            }
+        }
+
+        .circle-container {
+            position: relative;
+            width: 256px;
+            height: 256px;
+        }
+
+        .rotating-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .circle-content {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            left: 0;
+        }
+
+        .circle-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #e2e8f0;
+        }
+
+        .circle-text {
+            text-align: center;
+            margin-top: 8px;
+            color: #cbd5e1;
+        }
+
+        /* About mobile ordering */
+        @media (max-width: 767px) {
+            #about .order-1 {
+                order: 1 !important;
+            }
+
+            #about .order-2 {
+                order: 2 !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="antialiased md:px-36">
+
+    <!-- Loader -->
+    <div class="loader-container" id="loader">
+        <div class="loader-half left-half" id="leftHalf"></div>
+        <div class="loader-half right-half" id="rightHalf"></div>
+        <div class="progress-counter" id="counter">0%</div>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Three.js BG -->
+    <div id="threejs-background" class="fixed top-0 left-0 w-full h-full -z-10"></div>
+
+    <!-- Site Content -->
+    <div class="relative z-10 site-content" id="siteContent">
+
+        <!-- Header -->
+        <header id="navbar" class="fixed top-0 left-0 w-full p-4 sm:p-6 z-50 transition-all duration-300">
+            <div class="container mx-auto flex justify-between items-center glass-effect rounded-xl p-4">
+                <a href="#"
+                    class="text-2xl font-bold tracking-tighter text-white hover:text-indigo-400 transition-colors">Daniel.</a>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#hero" class="text-slate-300 hover:text-white transition-colors">Home</a>
+                    <a href="#about" class="text-slate-300 hover:text-white transition-colors">About</a>
+                    <a href="#experience" class="text-slate-300 hover:text-white transition-colors">Experience</a>
+                    <a href="#projects" class="text-slate-300 hover:text-white transition-colors">Projects</a>
+                    <a href="#education" class="text-slate-300 hover:text-white transition-colors">Education</a>
+                    <a href="#contact" class="text-slate-300 hover:text-white transition-colors">Contact</a>
+                </nav>
+                <a href="#contact"
+                    class="hidden md:block bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2 px-4 rounded-lg transition-all duration-300 transform hover:scale-105">
+                    Let's Talk
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden mt-2 glass-effect rounded-lg p-4">
+                <a href="#hero" class="block text-slate-300 hover:text-white transition-colors py-2">Home</a>
+                <a href="#about" class="block text-slate-300 hover:text-white transition-colors py-2">About</a>
+                <a href="#experience"
+                    class="block text-slate-300 hover:text-white transition-colors py-2">Experience</a>
+                <a href="#projects" class="block text-slate-300 hover:text-white transition-colors py-2">Projects</a>
+                <a href="#education" class="block text-slate-300 hover:text-white transition-colors py-2">Education</a>
+                <a href="#contact" class="block text-slate-300 hover:text-white transition-colors py-2">Contact</a>
+            </div>
+        </header>
+
+        <!-- Main -->
+        <main class="container mx-auto px-4 sm:px-6 lg:px-8">
+ <!-- hero -->
+        <section id="hero" class="min-h-screen flex flex-col justify-center items-center text-center px-6 md:px-12 lg:px-24 relative overflow-hidden">
+
+    <!-- Animated Gradient Background -->
+    <div class="absolute inset-0 bg-gradient-animate opacity-20 z-0"></div>
+
+    <!-- Main Heading -->
+    <h1 class="text-5xl md:text-7xl font-extrabold mb-4 relative z-10">
+      <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500">
+        Hi, I'm Daniel
+      </span>
+    </h1>
+
+    <!-- Subtitle -->
+    <h2 class="text-2xl md:text-4xl font-semibold text-gray-300 mb-4 relative z-10">
+      Frontend Developer <br>Ready to Build Your Next Product.
+    </h2>
+
+    <!-- Description -->
+    <p class="max-w-xl text-md md:text-lg text-gray-400 mb-8 leading-relaxed relative z-10">
+      Recent graduate skilled in HTML, CSS, JavaScript, React, and more. Eager to grow and deliver user-centric experiences.
+    </p>
+
+    <!-- CTA Button -->
+    <a href="mailto:hello@codewithdaniel.com"
+      class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 relative z-10">
+      Let's Connect
+    </a>
+
+    <!-- Tech Icons -->
+    <div class="">
+      <i class="fa-brands fa-html5 absolute top-36 left-16 text-5xl text-orange-400 z-10"></i>
+      <i class="fa-brands fa-css3-alt absolute top-36 right-16 text-5xl text-blue-600 z-10"></i>
+      <i class="fa-brands fa-js absolute bottom-32 left-20 text-5xl text-yellow-400 z-10"></i>
+      <i class="fa-brands fa-react absolute top-1/4 left-1/4 text-5xl text-blue-400 z-10"></i>
+      <i class="fa-brands fa-java absolute bottom-1/4 right-1/4 text-5xl text-red-600 z-10"></i>
+      <i class="fa-solid fa-code absolute top-1/3 right-10 text-5xl text-purple-600 z-10"></i>
+      <i class="fa-brands fa-python absolute bottom-20 right-10 text-5xl text-green-600 z-10"></i>
+      <i class="fa-brands fa-node-js absolute bottom-1/3 left-10 text-5xl text-green-400 z-10"></i>
+    </div>
+
+   
+  </section>
+
+
+            <!-- Skills Marquee -->
+            <section id="skills-marquee" class="py-12 overflow-x-hidden">
+                <div
+                    class="relative flex overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
+                    <div class="flex min-w-full shrink-0 items-center justify-around gap-12 animate-marquee">
+                        <p class="text-4xl font-bold text-slate-500">Three.js</p>
+                        <p class="text-4xl font-bold text-slate-500">React</p>
+                        <p class="text-4xl font-bold text-slate-500">GSAP</p>
+                        <p class="text-4xl font-bold text-slate-500">Tailwind CSS</p>
+                        <p class="text-4xl font-bold text-slate-500">Next.js</p>
+                        <p class="text-4xl font-bold text-slate-500">Framer Motion</p>
+                        <p class="text-4xl font-bold text-slate-500">WebGL</p>
+                    </div>
+                    <div class="flex min-w-full shrink-0 items-center justify-around gap-12 animate-marquee"
+                        aria-hidden="true">
+                        <p class="text-4xl font-bold text-slate-500">Three.js</p>
+                        <p class="text-4xl font-bold text-slate-500">React</p>
+                        <p class="text-4xl font-bold text-slate-500">GSAP</p>
+                        <p class="text-4xl font-bold text-slate-500">Tailwind CSS</p>
+                        <p class="text-4xl font-bold text-slate-500">Next.js</p>
+                        <p class="text-4xl font-bold text-slate-500">Framer Motion</p>
+                        <p class="text-4xl font-bold text-slate-500">WebGL</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About -->
+            <section id="about" class="py-20 md:py-32">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Left: Image -->
+                    <div
+                        class="w-full md:w-[400px] md:h-[400px] ml-6 md:ml-36 flex justify-center items-center rounded-2xl glass-effect p-4 order-1 md:order-1">
+                        <img class="w-full h-full object-cover rounded-2xl"
+                            src="https://wallpapercat.com/w/full/f/6/d/5823592-1030x1030-phone-hd-boy-programmer-wallpaper-photo.jpg"
+                            alt="Coder Image">
+                    </div>
+                    <!-- Right: Content -->
+                    <div class="order-2 md:order-2 gsap-reveal-right px-8">
+                       
+                        <h3 class="text-5xl font-semibold mb-4">Passionate Frontend Developer</h3>
+                        <p class="text-lg text-slate-400 mb-4">
+                            I create fast, beautiful web apps that users love. Combining design with code, I turn ideas
+                            into interactive experiences.
+                        </p>
+                        <p class="text-lg text-slate-400">
+                            Always learning and solving challenges, I push web technology to its limits.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Circular Portfolio Section (Integrated) -->
+            <section id="portfolio" class="portfolio-section">
+                <div class="container mx-auto px-4">
+                    <div class="portfolio-header">
+                        <div class="portfolio-text">
+                            <span class="portfolio-subtitle">Projects</span>
+                            <h3 class="portfolio-title">Practice makes <br /> perfect.</h3>
+                            <p class="portfolio-description">
+                                One good work is better than countless bad ones. Not to be an assembly line employee,
+                                only to produce best crafted products.
+                            </p>
+                        </div>
+                        <div class="portfolio-circle">
+                            <div class="circle-container">
+                                <svg class="rotating-text" viewBox="0 0 220 220" id="rotatingSvg">
+                                    <path id="curve" d="M 110 110, m -90, 0 a 90,90 0 1,1 180,0 a 90,90 0 1,1 -180,0"
+                                        fill="transparent" />
+                                    <text>
+                                        <textPath href="#curve" font-size="16" fill="#cbd5e1">
+                                            — Portfolio — Portfolio — Portfolio — Portfolio — Portfolio — Portfolio —
+                                            Portfolio
+                                        </textPath>
+                                    </text>
+                                </svg>
+                                <div class="circle-content">
+                                    <span class="circle-number">1+</span>
+                                    <p class="circle-text">
+                                        years of <br /> Freelance & Development <br /> experience
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience -->
+            <section id="experience" class="py-20 md:py-32">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter text-center mb-16 gsap-reveal">Work
+                    Experience</h2>
+                <div class="relative max-w-3xl mx-auto">
+                    <div class="absolute left-4 md:left-1/2 top-0 h-full w-0.5 bg-slate-700 -translate-x-1/2"></div>
+
+                    <div class="experience-item relative md:grid md:grid-cols-2 md:gap-8 mb-12">
+                        <div></div>
+                        <div class="md:pl-8 relative">
+                            <div
+                                class="z-10 absolute -left-1 md:left-[-42px] top-1 bg-indigo-500 rounded-full w-6 h-6 border-4 border-slate-800">
+                            </div>
+                            <div class="glass-effect p-6 rounded-xl gsap-reveal-right">
+                                <p class="text-sm text-slate-400 mb-1">2022 - Present</p>
+                                <h3 class="text-xl font-bold text-white mb-2">Lead Frontend Developer</h3>
+                                <p class="text-indigo-400 font-semibold mb-3">Stellar Solutions Inc.</p>
+                                <p class="text-slate-300">
+                                    Led the development of interactive 3D product visualizers using Three.js and React,
+                                    improving user engagement by 40%. Architected and maintained a component library
+                                    with Tailwind CSS.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="experience-item relative md:grid md:grid-cols-2 md:gap-8 mb-12">
+                        <div class="md:text-right md:pr-8 relative">
+                            <div
+                                class="z-10 absolute -left-1 md:right-[-42px] top-1 bg-indigo-500 rounded-full w-6 h-6 border-4 border-slate-800">
+                            </div>
+                            <div class="glass-effect p-6 rounded-xl gsap-reveal-left">
+                                <p class="text-sm text-slate-400 mb-1">2020 - 2022</p>
+                                <h3 class="text-xl font-bold text-white mb-2">Senior Frontend Developer</h3>
+                                <p class="text-indigo-400 font-semibold mb-3">Quantum Dynamics</p>
+                                <p class="text-slate-300">
+                                    Developed and animated complex data visualizations and dashboards. Utilized GSAP for
+                                    high-performance animations, enhancing data storytelling and user comprehension.
+                                </p>
+                            </div>
+                        </div>
+                        <div></div>
+                    </div>
+
+                    <div class="experience-item relative md:grid md:grid-cols-2 md:gap-8 mb-12">
+                        <div></div>
+                        <div class="md:pl-8 relative">
+                            <div
+                                class="z-10 absolute -left-1 md:left-[-42px] top-1 bg-indigo-500 rounded-full w-6 h-6 border-4 border-slate-800">
+                            </div>
+                            <div class="glass-effect p-6 rounded-xl gsap-reveal-right">
+                                <p class="text-sm text-slate-400 mb-1">2018 - 2020</p>
+                                <h3 class="text-xl font-bold text-white mb-2">Frontend Developer</h3>
+                                <p class="text-indigo-400 font-semibold mb-3">Innovatech</p>
+                                <p class="text-slate-300">
+                                    Built responsive and accessible user interfaces for various client websites and
+                                    applications. Gained expertise in modern JavaScript frameworks and CSS
+                                    preprocessors.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects -->
+        <!-- Projects -->
+        <section id="projects" class="py-20 md:py-32 overflow-hidden">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tighter text-center mb-16 gsap-reveal">Featured Projects</h2>
+        
+            <div id="projects-container" class="h-[100vh] relative">
+                <div class="sticky top-0 h-screen flex items-center overflow-hidden">
+                    <div id="projects-track" class="flex gap-8 px-4">
+        
+                        <!-- Project One -->
+                        <div class="project-card flex-shrink-0 w-[80vw] md:w-[40vw] h-[60vh] glass-effect rounded-2xl p-6">
+                            <div
+                                class="w-full h-2/3 bg-slate-700 rounded-lg mb-4 flex items-center justify-center text-indigo-400 text-9xl">
+                                <i class="fa-solid fa-cube"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">Project One: 3D Configurator</h3>
+                            <p class="text-slate-400">An interactive 3D product customizer built with Three.js.</p>
+                        </div>
+        
+                        <!-- Project Two -->
+                        <div class="project-card flex-shrink-0 w-[80vw] md:w-[40vw] h-[60vh] glass-effect rounded-2xl p-6">
+                            <div
+                                class="w-full h-2/3 bg-slate-700 rounded-lg mb-4 flex items-center justify-center text-blue-400 text-9xl">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">Project Two: Data Viz Platform</h3>
+                            <p class="text-slate-400">A real-time data visualization dashboard using D3.js and React.</p>
+                        </div>
+        
+                        <!-- Project Three -->
+                        <div class="project-card flex-shrink-0 w-[80vw] md:w-[40vw] h-[60vh] glass-effect rounded-2xl p-6">
+                            <div
+                                class="w-full h-2/3 bg-slate-700 rounded-lg mb-4 flex items-center justify-center text-green-400 text-9xl">
+                                <i class="fa-solid fa-cart-shopping"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">Project Three: E-commerce Site</h3>
+                            <p class="text-slate-400">A high-performance e-commerce experience with Next.js.</p>
+                        </div>
+        
+                        <!-- Project Four -->
+                        <div class="project-card flex-shrink-0 w-[80vw] md:w-[40vw] h-[60vh] glass-effect rounded-2xl p-6">
+                            <div
+                                class="w-full h-2/3 bg-slate-700 rounded-lg mb-4 flex items-center justify-center text-red-400 text-9xl">
+                                <i class="fa-solid fa-gamepad"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold">Project Four: WebGL Game</h3>
+                            <p class="text-slate-400">A browser-based game leveraging WebGL for stunning graphics.</p>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+            <!-- Education -->
+            <section id="education" class="py-20 md:py-32">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tighter text-center mb-16 gsap-reveal">Education</h2>
+                <div class="max-w-3xl mx-auto space-y-8">
+                    <div class="education-item glass-effect p-6 rounded-xl flex items-start space-x-6 gsap-reveal">
+                        <div class="bg-indigo-600/20 text-indigo-400 p-4 rounded-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v11.494m-9-5.494h18"></path>
+                                <path d="M12 18a6 6 0 100-12 6 6 0 000 12z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">2014 - 2018</p>
+                            <h3 class="text-xl font-bold text-white">B.Sc. in Computer Science</h3>
+                            <p class="text-indigo-400 font-semibold">University of Technology</p>
+                        </div>
+                    </div>
+                    <div class="education-item glass-effect p-6 rounded-xl flex items-start space-x-6 gsap-reveal">
+                        <div class="bg-purple-600/20 text-purple-400 p-4 rounded-lg">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm text-slate-400">Ongoing</p>
+                            <h3 class="text-xl font-bold text-white">Advanced Three.js & WebGL Certification</h3>
+                            <p class="text-purple-400 font-semibold">Online Graphics Academy</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact -->
+            <section id="contact" class="py-20 md:py-32 text-center">
+                <div class="gsap-reveal">
+                    <h2 class="text-4xl md:text-5xl font-bold tracking-tighter mb-4">Let's Build the Future</h2>
+                    <p class="max-w-2xl mx-auto text-lg text-slate-400 mb-8">
+                        Have a project in mind or just want to connect? I'm always open to discussing new ideas and
+                        opportunities.
+                    </p>
+                    <a href="mailto:hello@johndoe.com"
+                        class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500 hover:from-indigo-300 hover:to-purple-400 transition-all duration-300">
+                        hello@daniel.com
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="py-8">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-slate-500">
+                <p>&copy; 2025 codewithdaniel. All rights reserved.</p>
+                <p class="text-sm mt-2">Designed & Built with futuristic vibes.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/RenderPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/controls/OrbitControls.js"></script>
+
+    <script>
+        // Split-screen loader logic
+        document.addEventListener('DOMContentLoaded', function () {
+            const loader = document.getElementById('loader');
+            const leftHalf = document.getElementById('leftHalf');
+            const rightHalf = document.getElementById('rightHalf');
+            const counter = document.getElementById('counter');
+            const siteContent = document.getElementById('siteContent');
+
+            let progress = 0;
+            const loadInterval = setInterval(() => {
+                progress += 1;
+                counter.textContent = `${progress}%`;
+
+                if (progress < 100) {
+                    const scale = 1 + (progress / 150);
+                    leftHalf.style.transform = `scaleX(${scale})`;
+                    rightHalf.style.transform = `scaleX(${scale})`;
+                }
+
+                if (progress >= 100) {
+                    clearInterval(loadInterval);
+                    leftHalf.style.transform = 'translateX(-100%)';
+                    rightHalf.style.transform = 'translateX(100%)';
+
+                    setTimeout(() => {
+                        loader.style.display = 'none';
+                        siteContent.classList.add('visible');
+                    }, 800);
+                }
+            }, 10); // slightly faster
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // GSAP
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Navbar scroll effect
+            gsap.to("#navbar", {
+                scrollTrigger: { trigger: "body", start: "top top", end: "+=100", scrub: 1 },
+                padding: "1rem 1.5rem",
+                backgroundColor: "rgba(17, 24, 39, 0.7)",
+            });
+
+            // Hero entrance
+            const heroTl = gsap.timeline({ delay: 0.2 });
+            heroTl.from(".hero-text", { opacity: 0, y: 50, stagger: 0.2, duration: 1, ease: "power3.out" })
+                .from(".hero-subtext", { opacity: 0, y: 30, duration: 0.8, ease: "power3.out" }, "-=0.6")
+                .from(".hero-cta", { opacity: 0, scale: 0.8, duration: 0.8, ease: "back.out(1.7)" }, "-=0.5");
+
+            // General reveal
+            document.querySelectorAll('.gsap-reveal').forEach(el => {
+                gsap.fromTo(el, { opacity: 0, y: 50 }, {
+                    opacity: 1, y: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                });
+            });
+            document.querySelectorAll('.gsap-reveal-left').forEach(el => {
+                gsap.fromTo(el, { opacity: 0, x: -50 }, {
+                    opacity: 1, x: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                });
+            });
+            document.querySelectorAll('.gsap-reveal-right').forEach(el => {
+                gsap.fromTo(el, { opacity: 0, x: 50 }, {
+                    opacity: 1, x: 0, duration: 1, ease: "power3.out",
+                    scrollTrigger: { trigger: el, start: "top 85%", toggleActions: "play none none none" }
+                });
+            });
+
+            // Projects horizontal scroll
+            const projectsTrack = document.querySelector("#projects-track");
+            const projectsContainer = document.querySelector("#projects-container");
+            if (projectsTrack && projectsContainer) {
+                gsap.to(projectsTrack, {
+                    x: () => -(projectsTrack.scrollWidth - projectsTrack.parentElement.offsetWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: projectsContainer,
+                        start: "top top",
+                        end: () => "+=" + (projectsTrack.scrollWidth - projectsTrack.parentElement.offsetWidth),
+                        pin: true,
+                        scrub: 1,
+                        invalidateOnRefresh: true
+                    }
+                });
+            }
+
+            // Custom cursor
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+            gsap.set(cursorDot, { xPercent: -50, yPercent: -50 });
+            gsap.set(cursorOutline, { xPercent: -50, yPercent: -50 });
+            window.addEventListener('mousemove', e => {
+                gsap.to(cursorDot, { duration: 0.2, x: e.clientX, y: e.clientY });
+                gsap.to(cursorOutline, { duration: 0.6, x: e.clientX, y: e.clientY, ease: "power2.out" });
+            });
+            document.querySelectorAll('a, button').forEach(el => {
+                el.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
+            });
+
+            // Three.js starfield background
+            let backgroundScene, backgroundCamera, backgroundRenderer, particles, backgroundMouseX = 0, backgroundMouseY = 0;
+            const backgroundContainer = document.getElementById('threejs-background');
+            const backgroundWindowHalfX = window.innerWidth / 2;
+            const backgroundWindowHalfY = window.innerHeight / 2;
+
+            function initThreeJSBackground() {
+                backgroundScene = new THREE.Scene();
+                backgroundCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+                backgroundCamera.position.z = 1000;
+
+                const geometry = new THREE.BufferGeometry();
+                const vertices = [];
+                const numParticles = 5000;
+                for (let i = 0; i < numParticles; i++) {
+                    const x = Math.random() * 2000 - 1000;
+                    const y = Math.random() * 2000 - 1000;
+                    const z = Math.random() * 2000 - 1000;
+                    vertices.push(x, y, z);
+                }
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                const material = new THREE.PointsMaterial({ color: 0x4c51bf, size: 2, transparent: true, opacity: 0.7 });
+                particles = new THREE.Points(geometry, material);
+                backgroundScene.add(particles);
+
+                backgroundRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
+                backgroundRenderer.setClearColor(0x000000, 0);
+                backgroundContainer.appendChild(backgroundRenderer.domElement);
+
+                document.addEventListener('mousemove', onDocumentMouseMove, false);
+                window.addEventListener('resize', onWindowResize, false);
+            }
+
+            function onWindowResize() {
+                backgroundCamera.aspect = window.innerWidth / window.innerHeight;
+                backgroundCamera.updateProjectionMatrix();
+                backgroundRenderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            function onDocumentMouseMove(event) {
+                backgroundMouseX = (event.clientX - backgroundWindowHalfX) / 2;
+                backgroundMouseY = (event.clientY - backgroundWindowHalfY) / 2;
+            }
+
+            function animateThreeJSBackground() {
+                requestAnimationFrame(animateThreeJSBackground);
+                const time = Date.now() * 0.00005;
+                backgroundCamera.position.x += (backgroundMouseX - backgroundCamera.position.x) * 0.05;
+                backgroundCamera.position.y += (-backgroundMouseY - backgroundCamera.position.y) * 0.05;
+                backgroundCamera.lookAt(backgroundScene.position);
+                particles.rotation.x = time * 0.2;
+                particles.rotation.y = time * 0.5;
+                backgroundRenderer.render(backgroundScene, backgroundCamera);
+            }
+
+            initThreeJSBackground();
+            animateThreeJSBackground();
+
+            // Mobile menu
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                document.body.style.overflow = mobileMenu.classList.contains('hidden') ? '' : 'hidden';
+            });
+
+            // Rotating circular portfolio text
+            const rotatingSvg = document.getElementById('rotatingSvg');
+            let rotation = 0;
+            const rotationSpeed = 0.6;
+            function rotateCircle() {
+                rotation += rotationSpeed;
+                if (rotation >= 360) rotation = 0;
+                rotatingSvg.style.transform = `rotate(${rotation}deg)`;
+                requestAnimationFrame(rotateCircle);
+            }
+            rotateCircle();
+        });
+    </script>
+</body>
+
+</html>
